@@ -19,7 +19,7 @@ import json
 import logging # modified eval_paper_authors
 from tabulate import tabulate # modified eval_paper_authors
 from tensorboardX import SummaryWriter
-import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 torch.set_num_threads(2)
 
@@ -89,7 +89,7 @@ for i in range(args.n_epochs):
 	sample_read = 0
 	sample_end = 0
 	all_tail_seq = sp.csr_matrix(([], ([], [])), shape=(num_e * num_r, num_e))
-	for train_samples_tim in range(len(train_samples)):
+	for train_samples_tim in tqdm(range(len(train_samples))):
 		model.train()
 		sample_end += train_samples[train_samples_tim]
 
@@ -156,7 +156,7 @@ for i in range(args.n_epochs):
 
 		n_batch = (dev_data.shape[0] + batch_size - 1) // batch_size
 
-		for idx in range(n_batch):
+		for idx in tqdm(range(n_batch)):
 			batch_start = idx * batch_size
 			batch_end = min(dev_data.shape[0], (idx + 1) * batch_size)
 			dev_batch_data = dev_data[batch_start: batch_end]
